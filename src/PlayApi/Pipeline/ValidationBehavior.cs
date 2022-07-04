@@ -4,8 +4,8 @@ using MediatR;
 
 namespace PlayApi.Pipeline;
 
-public class ValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest,TResult>
-    where TRequest : IRequest<TResult>
+public class ValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest,ErrorOr<TResult>>
+    where TRequest : IRequest<ErrorOr<TResult>>
 {
     private readonly IValidator<TRequest>? _validator;
 
@@ -31,11 +31,6 @@ public class ValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest,
                    description: validationFailure.ErrorMessage));
         }
 
-        return await next();
-    }
-
-    public async Task<TResult> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResult> next)
-    {
         return await next();
     }
 }
